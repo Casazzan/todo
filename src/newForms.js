@@ -105,6 +105,14 @@ const loadProjectForm = (name) => {
 
   container.appendChild(createLabel("Project name", "name"));
   container.appendChild(createInput("name", "text", name));
+
+  const submitBtn = document.createElement("button");
+  submitBtn.setAttribute("type", "submit");
+  submitBtn.classList.add("submit-btn");
+  submitBtn.addEventListener("click", submitProjectForm);
+  submitBtn.innerHTML = "Submit";
+  container.appendChild(submitBtn);
+
   document.body.appendChild(container);
 };
 
@@ -134,6 +142,13 @@ const submitTodoForm = () => {
   //TODO format these values to what things will be stored as
   //TODO add todo to that project
 
+  deleteForm();
+};
+
+const submitProjectForm = () => {
+  const name = document.getElementById("name").value;
+  console.log(name);
+  //TODO add project to project list
   deleteForm();
 };
 
