@@ -1,9 +1,16 @@
 import todoFactory from "./todo";
 import projectFactory from "./project";
+import { format as formatDate } from "date-fns";
+import { loadNewTodoForm, loadNewProjectForm } from "./newForms";
 
+const createDateObj = (day, month, year) => {
+  return new Date(year, month, day);
+};
+
+const date1 = createDateObj(1, 1, 2002);
 const todo = todoFactory(
   "Wash Clothes",
-  "January",
+  date1,
   "Description of washing clothes",
   1
 );
@@ -21,4 +28,7 @@ console.log("todoWithSublist: ", JSON.stringify(todoWithSublist));
 const project = projectFactory("fun activities");
 project.addTodo(todo);
 console.log("project: " + JSON.stringify(project));
-console.log(project.getTodos());
+
+loadNewTodoForm();
+
+//loadNewProjectForm();

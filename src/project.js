@@ -12,11 +12,7 @@ const projectFactory = (name) => {
     }
   };
 
-  const getTodos = () => {
-    return todos;
-  };
-
-  return { name, addTodo, removeTodo, getTodos };
+  return { name, todos, addTodo, removeTodo };
 };
 
 export default projectFactory;
