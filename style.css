@@ -1,0 +1,9 @@
+.todo-form {
+  display: flex;
+  flex-direction: column;
+}
+
+#task-container {
+  display: flex;
+  flex-direction: column;
+}
