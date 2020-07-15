@@ -98,31 +98,6 @@ const loadNewTodoForm = () => {
 //parameter to distinguish which one
 const loadCurrentTodoForm = () => {};
 
-const loadProjectForm = (name) => {
-  const container = document.createElement("div");
-  container.classList.add("project-form");
-  container.classList.add("form");
-
-  container.appendChild(createLabel("Project name", "name"));
-  container.appendChild(createInput("name", "text", name));
-
-  const submitBtn = document.createElement("button");
-  submitBtn.setAttribute("type", "submit");
-  submitBtn.classList.add("submit-btn");
-  submitBtn.addEventListener("click", submitProjectForm);
-  submitBtn.innerHTML = "Submit";
-  container.appendChild(submitBtn);
-
-  document.body.appendChild(container);
-};
-
-const loadNewProjectForm = () => {
-  loadProjectForm("");
-};
-
-//TODO: should call load project form
-const loadCurrentProjectForm = () => {};
-
 const submitTodoForm = () => {
   const projectName = document.getElementById("proj").value;
   const name = document.getElementById("name").value;
@@ -145,13 +120,15 @@ const submitTodoForm = () => {
   deleteForm();
 };
 
-const submitProjectForm = () => {
-  const name = document.getElementById("name").value;
-  console.log(name);
-  //TODO add project to project list
-  deleteForm();
+const newProject = () => {
+  const input = document.getElementById("project-input");
+  const name = input.value;
+  if (name) {
+    //Add project to project list
+    //Add above new form
+    input.value = "";
+  }
 };
-
 const deleteForm = () => {
   const container = document.querySelector(".form");
   while (container.firstChild) {
@@ -169,4 +146,4 @@ const addSubTask = () => {
   container.prepend(subTask);
 };
 
-export { loadNewProjectForm, loadNewTodoForm };
+export { newProject, loadNewTodoForm };

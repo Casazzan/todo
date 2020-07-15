@@ -1,7 +1,7 @@
 import todoFactory from "./todo";
 import projectFactory from "./project";
 import { format as formatDate } from "date-fns";
-import { loadNewTodoForm, loadNewProjectForm } from "./newForms";
+import { loadNewTodoForm, newProject } from "./newForms";
 
 const createDateObj = (day, month, year) => {
   return new Date(year, month, day);
@@ -20,6 +20,4 @@ project.addTodo(todoWithSublist);
 console.log("project: " + JSON.stringify(project));
 
 document.getElementById("todo-btn").addEventListener("click", loadNewTodoForm);
-document
-  .getElementById("project-btn")
-  .addEventListener("click", loadNewProjectForm);
+document.getElementById("project-btn").addEventListener("click", newProject);
