@@ -21,3 +21,56 @@ console.log("project: " + JSON.stringify(project));
 
 document.getElementById("todo-btn").addEventListener("click", loadNewTodoForm);
 document.getElementById("project-btn").addEventListener("click", newProject);
+
+const displayController = (() => {
+  const updateProjectDisplay = () => {
+    emptyProjectDisplay();
+
+    const container = document.getElementById("proj-list");
+    const bottomElement = document.getElementById("new-proj-container");
+    const projects = dataController.getProjects();
+
+    projects.forEach((proj) => {
+      const p = document.createElement("p");
+      p.classList.add("project");
+      p.textContent = proj.name;
+      container.insertBefore(p, bottomElement);
+    });
+  };
+
+  const emptyProjectDisplay = () => {
+    const container = document.getElementById("proj-list");
+    while (container.childNodes.length > 2) {
+      container.removeChild(container.firstChild);
+    }
+  };
+
+  return { updateProjectDisplay };
+})();
+
+const dataController = (() => {
+  const projects = [];
+
+  const addNewProject = (name) => {
+    projects.push(projectFactory(name));
+    displayController.updateProjectDisplay();
+  };
+
+  const addExistingProject = (proj) => {
+    projects.push(proj);
+  };
+
+  const addTodoToProject = (projectName, todo) => {
+    const idx = projects.indexOf(projectName);
+    if (idx > -1) {
+      projects[idx].addTodo(todo);
+    }
+  };
+
+  const getProjects = () => {
+    return projects;
+  };
+  return { addNewProject, addTodoToProject, getProjects };
+})();
+
+export { dataController };

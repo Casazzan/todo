@@ -1,3 +1,5 @@
+import { dataController } from "./index";
+
 const loadTodoForm = (projectName, name, notes, date, priority, subList) => {
   const container = document.createElement("div");
   container.classList.add("todo-form");
@@ -124,8 +126,7 @@ const newProject = () => {
   const input = document.getElementById("project-input");
   const name = input.value;
   if (name) {
-    //Add project to project list
-    //Add above new form
+    dataController.addNewProject(name);
     input.value = "";
   }
 };
