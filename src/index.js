@@ -54,7 +54,6 @@ const mainDisplayController = (() => {
     const container = document.getElementById("todos");
     container.setAttribute("display", "none"); //TEST W/O this
     clearTodoDisplay();
-    console.log(todos);
 
     todos.forEach((item) => {
       const todo = document.createElement("div");
@@ -65,7 +64,7 @@ const mainDisplayController = (() => {
 
       const todoMain = document.createElement("div");
       todoMain.classList = "todo-main";
-      todoMain.appendChild(createTextElement("title", item.title));
+      todoMain.appendChild(createTextElement("name", item.name));
       todoMain.appendChild(createTextElement("date", item.date));
       todoMain.appendChild(createTextElement("priority", item.priority));
       if (item.isCompleted) {
@@ -140,11 +139,8 @@ const dataController = (() => {
     projects.push(proj);
   };
 
-  const addTodoToProject = (projectName, todo) => {
-    const idx = projects.indexOf(projectName);
-    if (idx > -1) {
-      projects[idx].addTodo(todo);
-    }
+  const addTodoToProject = (project, todo) => {
+    project.addTodo(todo);
   };
 
   const getProjects = () => {
@@ -154,12 +150,27 @@ const dataController = (() => {
   const getProject = (idx) => {
     return projects[idx];
   };
+
+  const addTodo = (projectName, name, date, notes, priority, subList) => {
+    const todo = todoFactory(name, date, notes, priority, subList);
+    let idx = 0;
+    for (let i = 1; i < projects.length; i++) {
+      if ((projects[i].name = projectName)) {
+        addTodoToProject(projects[i], todo);
+        idx = i;
+      }
+    }
+    addTodoToProject(projects[0], todo);
+    mainDisplayController.openProject(idx);
+  };
+
   return {
     addNewProject,
     addTodoToProject,
     getProjects,
     addExistingProject,
     getProject,
+    addTodo,
   };
 })();
 

@@ -1,4 +1,5 @@
 import { dataController } from "./index";
+import { parseISO, format as formatDate } from "date-fns";
 
 const loadTodoForm = (projectName, name, notes, date, priority, subList) => {
   const container = document.createElement("div");
@@ -10,17 +11,17 @@ const loadTodoForm = (projectName, name, notes, date, priority, subList) => {
   const projectSelector = document.createElement("select");
   projectSelector.id = "proj";
   projectSelector.appendChild(createOption("proj", "None"));
-  //TODO for each through all projects and create option
+
   let index = 0;
-  /*
-    const projects = getProjects();
-    for(let i = 0; i < projects.length; i++) {
-        projectSelector.appendChild(createOption("proj", project.name));
-        if(project.name = projectName) {
-            index = i;
-        }
+
+  const projects = dataController.getProjects();
+  for (let i = 1; i < projects.length; i++) {
+    projectSelector.appendChild(createOption("proj", projects[i].name));
+    if ((projects[i].name = projectName)) {
+      index = i - 1;
     }
-    */
+  }
+
   projectSelector.selectedIndex = index;
 
   container.appendChild(projectSelector);
@@ -53,11 +54,13 @@ const loadTodoForm = (projectName, name, notes, date, priority, subList) => {
   container.appendChild(createLabel("Priority", "prior"));
   const prioritySelector = document.createElement("select");
   prioritySelector.id = "prior";
-  prioritySelector.appendChild(createOption("prior", "None", 0));
-  prioritySelector.appendChild(createOption("prior", "Low", 1));
-  prioritySelector.appendChild(createOption("prior", "Medium", 2));
-  prioritySelector.appendChild(createOption("prior", "High", 3));
-  prioritySelector.selectedIndex = priority;
+  prioritySelector.appendChild(createOption("prior", "None"));
+  prioritySelector.appendChild(createOption("prior", "Low"));
+  prioritySelector.appendChild(createOption("prior", "Medium"));
+  prioritySelector.appendChild(createOption("prior", "High"));
+  if (priority === "Low") prioritySelector.selectedIndex = 1;
+  if (priority === "Medium") prioritySelector.selectedIndex = 2;
+  if (priority === "High") prioritySelector.selectedIndex = 3;
   container.appendChild(prioritySelector);
 
   const submitBtn = document.createElement("button");
@@ -104,8 +107,8 @@ const submitTodoForm = () => {
   const projectName = document.getElementById("proj").value;
   const name = document.getElementById("name").value;
   const notes = document.getElementById("note").value;
-  const date = document.getElementById("date").value;
-  console.log("date: ", date);
+  let date = document.getElementById("date").value;
+  date = formatDate(parseISO(date), "mm-dd-yyyy");
   const priority = document.getElementById("prior").value;
 
   const subList = [];
@@ -115,7 +118,8 @@ const submitTodoForm = () => {
       subList.push(task.value);
     }
   });
-  console.log({ projectName, name, notes, date, priority, subList });
+
+  dataController.addTodo(projectName, name, date, notes, priority, subList);
   //TODO format these values to what things will be stored as
   //TODO add todo to that project
 
