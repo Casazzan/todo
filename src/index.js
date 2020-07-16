@@ -48,6 +48,7 @@ const mainDisplayController = (() => {
     document.getElementById("display-proj").textContent = project.name;
 
     updateTodoDisplay(project.todos);
+    dataController.activeProjectIdx = idx;
   };
 
   const updateTodoDisplay = (todos) => {
@@ -127,6 +128,7 @@ const mainDisplayController = (() => {
 })();
 
 const dataController = (() => {
+  let activeProjectIdx = 0;
   const projects = [];
 
   const addNewProject = (name) => {
@@ -145,6 +147,10 @@ const dataController = (() => {
 
   const getProjects = () => {
     return projects;
+  };
+
+  const getActiveProject = () => {
+    return getProject(activeProjectIdx);
   };
 
   const getProject = (idx) => {
@@ -171,12 +177,14 @@ const dataController = (() => {
     addExistingProject,
     getProject,
     addTodo,
+    getActiveProject,
+    activeProjectIdx,
   };
 })();
 
 const todoWithSublist = todoFactory(
   "Conquer the world",
-  createDateObj(1, 1, 2002),
+  formatDate(createDateObj(1, 1, 2002), "mm-dd-yyyy"),
   "Be ruler of every country",
   2,
   ["conquer england", "tell england to conquer everyone else"]
@@ -196,4 +204,5 @@ document.getElementById("project-input").addEventListener("keydown", (e) => {
 });
 
 projectDisplayController.updateProjectDisplay();
+mainDisplayController.openProject(0);
 export { dataController };

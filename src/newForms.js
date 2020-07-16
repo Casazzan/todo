@@ -70,7 +70,7 @@ const loadTodoForm = (projectName, name, notes, date, priority, subList) => {
   submitBtn.innerHTML = "Submit";
   container.appendChild(submitBtn);
 
-  document.body.appendChild(container);
+  document.body.prepend(container);
 };
 
 const createOption = (name, option, value = option) => {
@@ -97,7 +97,8 @@ const createLabel = (innerHtml, id) => {
 };
 
 const loadNewTodoForm = () => {
-  loadTodoForm("None", "", "", "", 0, "");
+  console.log(dataController.getActiveProject());
+  loadTodoForm(dataController.getActiveProject().name, "", "", "", 0, "");
 };
 
 //parameter to distinguish which one
@@ -108,7 +109,9 @@ const submitTodoForm = () => {
   const name = document.getElementById("name").value;
   const notes = document.getElementById("note").value;
   let date = document.getElementById("date").value;
-  date = formatDate(parseISO(date), "mm-dd-yyyy");
+  if (date) {
+    date = formatDate(parseISO(date), "mm-dd-yyyy");
+  }
   const priority = document.getElementById("prior").value;
 
   const subList = [];
