@@ -26,11 +26,12 @@ const loadTodoForm = (projectName, name, notes, date, priority, subList) => {
 
   container.appendChild(projectSelector);
 
-  container.appendChild(createLabel("Add Sub Task"), "tasks");
+  container.appendChild(createLabel("Add Sub Task", "task-container"));
   const taskContainer = document.createElement("div");
   taskContainer.id = "task-container";
 
   const addBtn = document.createElement("button");
+  addBtn.id = "add-btn";
   addBtn.setAttribute("type", "button");
   addBtn.innerHTML = "+";
   addBtn.addEventListener("click", addSubTask);
@@ -54,13 +55,13 @@ const loadTodoForm = (projectName, name, notes, date, priority, subList) => {
   container.appendChild(createLabel("Priority", "prior"));
   const prioritySelector = document.createElement("select");
   prioritySelector.id = "prior";
-  prioritySelector.appendChild(createOption("prior", "None"));
-  prioritySelector.appendChild(createOption("prior", "Low"));
-  prioritySelector.appendChild(createOption("prior", "Medium"));
-  prioritySelector.appendChild(createOption("prior", "High"));
-  if (priority === "Low") prioritySelector.selectedIndex = 1;
-  if (priority === "Medium") prioritySelector.selectedIndex = 2;
-  if (priority === "High") prioritySelector.selectedIndex = 3;
+  prioritySelector.appendChild(createOption("prior", "None", ""));
+  prioritySelector.appendChild(createOption("prior", "Low", "!"));
+  prioritySelector.appendChild(createOption("prior", "Medium", "!!"));
+  prioritySelector.appendChild(createOption("prior", "High", "!!!"));
+  if (priority === "!") prioritySelector.selectedIndex = 1;
+  if (priority === "!!") prioritySelector.selectedIndex = 2;
+  if (priority === "!!!") prioritySelector.selectedIndex = 3;
   container.appendChild(prioritySelector);
 
   const submitBtn = document.createElement("button");

@@ -3,10 +3,6 @@ import projectFactory from "./project";
 import { format as formatDate } from "date-fns";
 import { loadNewTodoForm, newProject } from "./newForms";
 
-const createDateObj = (day, month, year) => {
-  return new Date(year, month, day);
-};
-
 const projectDisplayController = (() => {
   const updateProjectDisplay = () => {
     emptyProjectDisplay();
@@ -65,30 +61,58 @@ const mainDisplayController = (() => {
 
       const todoMain = document.createElement("div");
       todoMain.classList = "todo-main";
-      todoMain.appendChild(createTextElement("name", item.name));
-      todoMain.appendChild(createTextElement("date", item.date));
+      if (item.name) todoMain.appendChild(createTextElement("name", item.name));
+      else todoMain.appendChild(createTextElement("name", "Unnamed Todo"));
+      if (item.date) todoMain.appendChild(createTextElement("date", item.date));
       todoMain.appendChild(createTextElement("priority", item.priority));
       if (item.isCompleted) {
         item.classList.add("complete");
       }
+      todoMain.appendChild(createEditButton());
+      todoMain.appendChild(createDeleteButton());
       todoContent.appendChild(todoMain);
 
-      const todoSub = document.createElement("div");
-      todoSub.classList = "todo-sub hidden";
-      todoSub.appendChild(createTextElement("notes", item.notes));
-      todoSub.appendChild(
-        createTextElement("notes", JSON.stringify(item.subList))
-      );
-      todoContent.appendChild(todoSub);
+      if (item.notes || item.subList) {
+        const todoSub = document.createElement("div");
+        todoSub.classList = "todo-sub hidden";
+        if (item.notes) {
+          todoSub.appendChild(
+            createTextElement("notes", "Notes: " + item.notes)
+          );
+        }
+        if (item.subList) {
+          const subList = document.createElement("div");
+          subList.id = "sub-list";
+          item.subList.forEach((subItem) => {
+            subList.appendChild(createTextElement("sub-item", subItem));
+          });
+          todoSub.appendChild(subList);
+        }
+        todoContent.appendChild(todoSub);
+      }
 
+      todoContent.addEventListener("click", revealTodoSub);
       todo.appendChild(todoContent);
-      todo.appendChild(createEditButton());
-      todo.appendChild(createDeleteButton());
 
       container.appendChild(todo);
     });
 
     container.setAttribute("display", "");
+  };
+
+  const revealTodoSub = (e) => {
+    //hide other revealed element
+    const element = document.querySelector(".shown");
+    if (element) {
+      element.classList.toggle("shown");
+      element.classList.toggle("hidden");
+    }
+
+    const subContent = e.target.parentNode.nextSibling;
+    if (subContent && subContent !== element) {
+      subContent.classList.toggle("shown");
+      subContent.classList.toggle("hidden");
+    }
   };
 
   const createTextElement = (pClass, text) => {
@@ -184,9 +208,9 @@ const dataController = (() => {
 
 const todoWithSublist = todoFactory(
   "Conquer the world",
-  formatDate(createDateObj(1, 1, 2002), "mm-dd-yyyy"),
+  formatDate(new Date(2020, 6, 20), "mm-dd-yyyy"),
   "Be ruler of every country",
-  2,
+  "!!!",
   ["conquer england", "tell england to conquer everyone else"]
 );
 

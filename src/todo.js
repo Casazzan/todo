@@ -6,7 +6,7 @@ const todoFactory = (...args) => {
   let date = args[1];
   let notes = args[2];
   let priority = args[3];
-  let subList = args.slice(4);
+  let subList = args[4];
   let isComplete = false;
 
   return { name, date, notes, priority, isComplete, subList };
