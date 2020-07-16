@@ -44,3 +44,9 @@ header {
 .project {
   cursor: pointer;
 }
+
+.todo-form {
+  position: absolute;
+  top: 15%;
+  left: 250px;
+}
