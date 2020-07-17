@@ -16,7 +16,11 @@ const projectFactory = (name) => {
     todos.splice(idx, 1);
   };
 
-  return { name, todos, addTodo, removeTodo, removeTodoByIdx };
+  const getTodo = (idx) => {
+    return todos[idx];
+  };
+
+  return { name, todos, addTodo, removeTodo, removeTodoByIdx, getTodo };
 };
 
 export default projectFactory;

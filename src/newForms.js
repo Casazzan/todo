@@ -6,6 +6,19 @@ const loadTodoForm = (projectName, name, notes, date, priority, subList) => {
   container.classList.add("todo-form");
   container.classList.add("form");
 
+  const head = document.createElement("h1");
+  head.textContent = "Create New Todo";
+  head.id = "form-header";
+  container.appendChild(head);
+
+  const exit = document.createElement("button");
+  exit.setAttribute("type", "button");
+  exit.id = "exit-form";
+  exit.title = "Exit";
+  exit.innerHTML = "X";
+  exit.addEventListener("click", deleteForm);
+  container.appendChild(exit);
+
   container.appendChild(createLabel("Project", "proj"));
 
   const projectSelector = document.createElement("select");
@@ -75,6 +88,10 @@ const loadTodoForm = (projectName, name, notes, date, priority, subList) => {
 
   document.querySelector("#main").classList.add("dimmed");
   document.querySelector("header").classList.add("dimmed");
+
+  subList.forEach((task) => {
+    addSubTaskWithText(task);
+  });
 };
 
 const createOption = (name, option, value = option) => {
@@ -100,13 +117,14 @@ const createLabel = (innerHtml, id) => {
   return label;
 };
 
-const loadNewTodoForm = () => {
-  console.log(dataController.getActiveProject());
-  loadTodoForm(dataController.getActiveProject().name, "", "", "", 0, "");
+const loadNewTodoForm = (projectName) => {
+  loadTodoForm(projectName, "", "", "", 0, "");
 };
 
 //parameter to distinguish which one
-const loadCurrentTodoForm = () => {};
+const loadCurrentTodoForm = (project, name, notes, date, prior, subList) => {
+  loadTodoForm(project, name, notes, date, prior, subList);
+};
 
 const submitTodoForm = () => {
   const projectName = document.getElementById("proj").value;
@@ -131,8 +149,6 @@ const submitTodoForm = () => {
   //TODO add todo to that project
 
   deleteForm();
-  document.querySelector("#main").classList.remove("dimmed");
-  document.querySelector("header").classList.remove("dimmed");
 };
 
 const newProject = () => {
@@ -150,14 +166,21 @@ const deleteForm = () => {
   }
 
   container.parentNode.removeChild(container);
+  document.querySelector("#main").classList.remove("dimmed");
+  document.querySelector("header").classList.remove("dimmed");
 };
 
 const addSubTask = () => {
+  addSubTaskWithText("");
+};
+
+const addSubTaskWithText = (task) => {
   const container = document.getElementById("task-container");
   const subTask = document.createElement("input");
   subTask.classList.add("sub-task");
   subTask.setAttribute("type", "text");
+  subTask.value = task;
   container.prepend(subTask);
 };
 
-export { newProject, loadNewTodoForm };
+export { newProject, loadNewTodoForm, loadCurrentTodoForm };

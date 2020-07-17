@@ -1,7 +1,7 @@
 import todoFactory from "./todo";
 import projectFactory from "./project";
 import { format as formatDate } from "date-fns";
-import { loadNewTodoForm, newProject } from "./newForms";
+import { loadNewTodoForm, newProject, loadCurrentTodoForm } from "./newForms";
 
 const projectDisplayController = (() => {
   const updateProjectDisplay = () => {
@@ -201,6 +201,19 @@ const dataController = (() => {
     mainDisplayController.updateTodoDisplay(getActiveProject().todos);
   };
 
+  const editTodo = (idx) => {
+    const item = getActiveProject().getTodo(idx);
+    const projectName = getActiveProject().name;
+    loadCurrentTodoForm(
+      projectName,
+      item.name,
+      item.notes,
+      item.date,
+      item.priority,
+      item.subList
+    );
+  };
+
   const addTodo = (projectName, name, date, notes, priority, subList) => {
     const todo = todoFactory(name, date, notes, priority, subList);
     let idx = 0;
@@ -223,6 +236,7 @@ const dataController = (() => {
     addTodo,
     getActiveProject,
     removeTodo,
+    editTodo,
     activeProjectIdx,
   };
 })();
@@ -240,7 +254,9 @@ projectTest.addTodo(todoWithSublist);
 
 dataController.addExistingProject(projectTest);
 
-document.getElementById("todo-btn").addEventListener("click", loadNewTodoForm);
+document.getElementById("todo-btn").addEventListener("click", () => {
+  loadNewTodoForm(dataController.getActiveProject().name);
+});
 document.getElementById("project-btn").addEventListener("click", newProject);
 document.getElementById("project-input").addEventListener("keydown", (e) => {
   if (e.key === "Enter") {
