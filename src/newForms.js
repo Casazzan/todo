@@ -72,6 +72,9 @@ const loadTodoForm = (projectName, name, notes, date, priority, subList) => {
   container.appendChild(submitBtn);
 
   document.body.prepend(container);
+
+  document.querySelector("#main").classList.add("dimmed");
+  document.querySelector("header").classList.add("dimmed");
 };
 
 const createOption = (name, option, value = option) => {
@@ -128,6 +131,8 @@ const submitTodoForm = () => {
   //TODO add todo to that project
 
   deleteForm();
+  document.querySelector("#main").classList.remove("dimmed");
+  document.querySelector("header").classList.remove("dimmed");
 };
 
 const newProject = () => {

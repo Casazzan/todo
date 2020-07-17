@@ -53,11 +53,11 @@ const mainDisplayController = (() => {
     clearTodoDisplay();
 
     let idx = 0;
-    todos.forEach((item) => {
+    for (let idx = 0; idx < todos.length; idx++) {
+      const item = todos[idx];
       const todo = document.createElement("div");
       todo.classList = "todo";
       todo.dataset.idx = idx;
-      idx++;
 
       const todoContent = document.createElement("div");
       todoContent.classList = "todo-content";
@@ -104,7 +104,7 @@ const mainDisplayController = (() => {
       todo.appendChild(todoContent);
 
       container.appendChild(todo);
-    });
+    }
 
     container.setAttribute("display", "");
   };
@@ -138,7 +138,7 @@ const mainDisplayController = (() => {
     button.setAttribute("type", "button");
     button.setAttribute("title", "Edit");
     button.addEventListener("click", (e) => {
-      dataController.editTodo(e.target.parentNode.dataset.idx);
+      dataController.editTodo(e.target.parentNode.parentNode.dataset.idx);
     });
     return button;
   };
@@ -149,9 +149,9 @@ const mainDisplayController = (() => {
     button.textContent = "X";
     button.setAttribute("type", "button");
     button.setAttribute("title", "Delete");
-    button.addEventListener("click", (e) => {
+    button.addEventListener("click", function (e) {
       if (confirm("Are you sure you want to delete this Todo?")) {
-        dataController.removeTodo(e.target.parentNode.dataset.idx);
+        dataController.removeTodo(e.target.parentNode.parentNode.dataset.idx);
       }
     });
     return button;
@@ -197,8 +197,8 @@ const dataController = (() => {
   };
 
   const removeTodo = (idx) => {
-    projects[activeProjectIdx].removeTodoByIdx(idx);
-    mainDisplayController.updateTodoDisplay(projects[activeProjectIdx].todos);
+    getActiveProject().removeTodoByIdx(idx);
+    mainDisplayController.updateTodoDisplay(getActiveProject().todos);
   };
 
   const addTodo = (projectName, name, date, notes, priority, subList) => {
