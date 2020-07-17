@@ -2,12 +2,10 @@ html,
 body {
   height: 100%;
   background-color: black;
+  /*try color: black*/
 }
 
 .dimmed {
-  transition: opacity 0.3s ease-in;
-  -webkit-transition: opacity 0.3s ease-in;
-  -moz-transition: opacity 0.3s ease-in;
   opacity: 0.4;
 }
 
@@ -21,6 +19,9 @@ header {
   text-align: center;
   font-size: 4em;
   height: 10%;
+  transition: opacity 0.3s ease-in;
+  -webkit-transition: opacity 0.3s ease-in;
+  -moz-transition: opacity 0.3s ease-in;
 }
 
 #left-menu {
@@ -38,6 +39,9 @@ header {
   height: 90%;
   display: flex;
   background-color: white;
+  transition: opacity 0.3s ease-in;
+  -webkit-transition: opacity 0.3s ease-in;
+  -moz-transition: opacity 0.3s ease-in;
 }
 
 .subhead {
@@ -58,10 +62,16 @@ header {
   top: 15%;
   left: max(250px, 30%);
   width: 40%;
-  padding: 15px;
+  padding: 0 15px 15px 15px;
   background-color: white;
   border: solid black 2px;
   border-radius: 5px;
+}
+
+#form-header {
+  font-size: 1.4em;
+  text-align: center;
+  padding-bottom: -5px;
 }
 
 .todo-form label,
@@ -152,4 +162,19 @@ header {
   grid-row: 1;
   grid-column: 2;
   align-self: center;
+}
+
+#exit-form {
+  background-color: transparent;
+  width: 25px;
+  position: absolute;
+  right: 1px;
+  top: 1px;
+  font-size: 1.4em;
+  border: none;
+}
+
+#exit-form:hover {
+  color: red;
+  transform: scale(1.2);
 }
