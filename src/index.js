@@ -52,9 +52,12 @@ const mainDisplayController = (() => {
     container.setAttribute("display", "none"); //TEST W/O this
     clearTodoDisplay();
 
+    let idx = 0;
     todos.forEach((item) => {
       const todo = document.createElement("div");
       todo.classList = "todo";
+      todo.dataset.idx = idx;
+      idx++;
 
       const todoContent = document.createElement("div");
       todoContent.classList = "todo-content";
@@ -68,8 +71,6 @@ const mainDisplayController = (() => {
       if (item.isCompleted) {
         item.classList.add("complete");
       }
-      todoMain.appendChild(createEditButton());
-      todoMain.appendChild(createDeleteButton());
       todoContent.appendChild(todoMain);
 
       if (item.notes || item.subList) {
@@ -89,9 +90,17 @@ const mainDisplayController = (() => {
           todoSub.appendChild(subList);
         }
         todoContent.appendChild(todoSub);
+
+        todoMain.classList.add("clickable");
+        todoMain.addEventListener("click", revealTodoSub);
       }
 
-      todoContent.addEventListener("click", revealTodoSub);
+      const todoBtns = document.createElement("div");
+      todoBtns.classList = "todo-btns";
+      todoBtns.appendChild(createEditButton());
+      todoBtns.appendChild(createDeleteButton());
+
+      todo.appendChild(todoBtns);
       todo.appendChild(todoContent);
 
       container.appendChild(todo);
@@ -127,8 +136,10 @@ const mainDisplayController = (() => {
     button.classList.add("edit-btn");
     button.textContent = "...";
     button.setAttribute("type", "button");
-    //TODO addEVent
-    //button.addEventListener("click", )
+    button.setAttribute("title", "Edit");
+    button.addEventListener("click", (e) => {
+      dataController.editTodo(e.target.parentNode.dataset.idx);
+    });
     return button;
   };
 
@@ -137,8 +148,12 @@ const mainDisplayController = (() => {
     button.classList.add("del-btn");
     button.textContent = "X";
     button.setAttribute("type", "button");
-    //TODO addEVent
-    //button.addEventListener("click", )
+    button.setAttribute("title", "Delete");
+    button.addEventListener("click", (e) => {
+      if (confirm("Are you sure you want to delete this Todo?")) {
+        dataController.removeTodo(e.target.parentNode.dataset.idx);
+      }
+    });
     return button;
   };
 
@@ -148,7 +163,7 @@ const mainDisplayController = (() => {
       container.removeChild(container.lastChild);
     }
   };
-  return { openProject };
+  return { openProject, updateTodoDisplay };
 })();
 
 const dataController = (() => {
@@ -181,6 +196,11 @@ const dataController = (() => {
     return projects[idx];
   };
 
+  const removeTodo = (idx) => {
+    projects[activeProjectIdx].removeTodoByIdx(idx);
+    mainDisplayController.updateTodoDisplay(projects[activeProjectIdx].todos);
+  };
+
   const addTodo = (projectName, name, date, notes, priority, subList) => {
     const todo = todoFactory(name, date, notes, priority, subList);
     let idx = 0;
@@ -202,6 +222,7 @@ const dataController = (() => {
     getProject,
     addTodo,
     getActiveProject,
+    removeTodo,
     activeProjectIdx,
   };
 })();

@@ -68,13 +68,11 @@ header {
 }
 
 .todo {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: 5fr 1fr;
+  grid-template-rows: 1;
   width: 90%;
   margin-left: 5%;
-  padding: 5px;
-  border: gray solid 1px;
-  border-radius: 10px;
   margin-bottom: 20px;
 }
 
@@ -87,10 +85,10 @@ header {
 }
 
 .todo-content {
-  display: flex;
-  flex-direction: column;
   width: 100%;
-  cursor: pointer;
+  padding: 5px;
+  border: gray solid 1px;
+  border-radius: 10px;
 }
 
 .hidden {
@@ -98,8 +96,10 @@ header {
 }
 
 .todo-main {
+  grid-row: 1;
+  grid-column: 1;
   display: grid;
-  grid-template-columns: 4fr 4fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr 1fr;
 }
 
@@ -134,4 +134,14 @@ header {
 #sub-list {
   background-color: lightgray;
   padding-left: 20px;
+}
+
+.clickable {
+  cursor: pointer;
+}
+
+.todo-btns {
+  grid-row: 1;
+  grid-column: 2;
+  align-self: center;
 }

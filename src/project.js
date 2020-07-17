@@ -12,7 +12,11 @@ const projectFactory = (name) => {
     }
   };
 
-  return { name, todos, addTodo, removeTodo };
+  const removeTodoByIdx = (idx) => {
+    todos.splice(idx, 1);
+  };
+
+  return { name, todos, addTodo, removeTodo, removeTodoByIdx };
 };
 
 export default projectFactory;
