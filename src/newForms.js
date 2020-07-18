@@ -7,7 +7,7 @@ const loadTodoForm = (projectName, name, notes, date, priority, subList) => {
   container.classList.add("form");
 
   const head = document.createElement("h1");
-  head.textContent = "Create New Todo";
+  head.textContent = "Create New To Do";
   head.id = "form-header";
   container.appendChild(head);
 
@@ -30,8 +30,8 @@ const loadTodoForm = (projectName, name, notes, date, priority, subList) => {
   const projects = dataController.getProjects();
   for (let i = 1; i < projects.length; i++) {
     projectSelector.appendChild(createOption("proj", projects[i].name));
-    if ((projects[i].name = projectName)) {
-      index = i - 1;
+    if (projects[i].name === projectName) {
+      index = i;
     }
   }
 
@@ -88,10 +88,11 @@ const loadTodoForm = (projectName, name, notes, date, priority, subList) => {
 
   document.querySelector("#main").classList.add("dimmed");
   document.querySelector("header").classList.add("dimmed");
-
-  subList.forEach((task) => {
-    addSubTaskWithText(task);
-  });
+  if (subList) {
+    subList.forEach((task) => {
+      addSubTaskWithText(task);
+    });
+  }
 };
 
 const createOption = (name, option, value = option) => {

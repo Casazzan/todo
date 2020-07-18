@@ -44,7 +44,7 @@ const mainDisplayController = (() => {
     document.getElementById("display-proj").textContent = project.name;
 
     updateTodoDisplay(project.todos);
-    dataController.activeProjectIdx = idx;
+    dataController.setActiveProjectIdx(idx);
   };
 
   const updateTodoDisplay = (todos) => {
@@ -150,7 +150,7 @@ const mainDisplayController = (() => {
     button.setAttribute("type", "button");
     button.setAttribute("title", "Delete");
     button.addEventListener("click", function (e) {
-      if (confirm("Are you sure you want to delete this Todo?")) {
+      if (confirm("Are you sure you want to delete this To Do?")) {
         dataController.removeTodo(e.target.parentNode.parentNode.dataset.idx);
       }
     });
@@ -169,6 +169,10 @@ const mainDisplayController = (() => {
 const dataController = (() => {
   let activeProjectIdx = 0;
   const projects = [];
+
+  const setActiveProjectIdx = (idx) => {
+    activeProjectIdx = idx;
+  };
 
   const addNewProject = (name) => {
     projects.push(projectFactory(name));
@@ -189,7 +193,7 @@ const dataController = (() => {
   };
 
   const getActiveProject = () => {
-    return getProject(activeProjectIdx);
+    return projects[activeProjectIdx];
   };
 
   const getProject = (idx) => {
@@ -218,12 +222,11 @@ const dataController = (() => {
     const todo = todoFactory(name, date, notes, priority, subList);
     let idx = 0;
     for (let i = 1; i < projects.length; i++) {
-      if ((projects[i].name = projectName)) {
-        addTodoToProject(projects[i], todo);
+      if (projects[i].name === projectName) {
         idx = i;
       }
     }
-    addTodoToProject(projects[0], todo);
+    addTodoToProject(projects[idx], todo);
     mainDisplayController.openProject(idx);
   };
 
@@ -237,7 +240,7 @@ const dataController = (() => {
     getActiveProject,
     removeTodo,
     editTodo,
-    activeProjectIdx,
+    setActiveProjectIdx,
   };
 })();
 
@@ -249,7 +252,7 @@ const todoWithSublist = todoFactory(
   ["conquer england", "tell england to conquer everyone else"]
 );
 
-const projectTest = projectFactory("All Tasks");
+const projectTest = projectFactory("Unassigned To Do's");
 projectTest.addTodo(todoWithSublist);
 
 dataController.addExistingProject(projectTest);
