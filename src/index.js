@@ -67,7 +67,11 @@ const mainDisplayController = (() => {
       if (item.name) todoMain.appendChild(createTextElement("name", item.name));
       else todoMain.appendChild(createTextElement("name", "Unnamed Todo"));
       if (item.date) todoMain.appendChild(createTextElement("date", item.date));
-      todoMain.appendChild(createTextElement("priority", item.priority));
+      const priority = createTextElement("priority", item.priority);
+      if (item.priority === "!") priority.classList.add("low-p");
+      if (item.priority === "!!") priority.classList.add("medium-p");
+      if (item.priority === "!!!") priority.classList.add("high-p");
+      todoMain.appendChild(priority);
       if (item.isCompleted) {
         item.classList.add("complete");
       }
