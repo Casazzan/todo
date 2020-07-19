@@ -192,3 +192,20 @@ header {
   color: red;
   transform: scale(1.2);
 }
+
+.priority {
+  line-height: 35px;
+  text-align: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+.high-p {
+  border: solid 3px rgb(255, 146, 146);
+}
+.medium-p {
+  border: solid 3px rgb(255, 199, 94);
+}
+.low-p {
+  border: solid 3px rgb(233, 227, 67);
+}
