@@ -153,11 +153,14 @@ const mainDisplayController = (() => {
   const createEditButton = () => {
     const button = document.createElement("button");
     button.classList.add("edit-btn");
-    button.textContent = "...";
+    button.classList.add("clickable");
+    button.innerHTML = '<i class="fas fa-edit"></i>';
     button.setAttribute("type", "button");
     button.setAttribute("title", "Edit");
     button.addEventListener("click", (e) => {
-      dataController.editTodo(e.target.parentNode.parentNode.dataset.idx);
+      dataController.editTodo(
+        e.target.parentNode.parentNode.parentNode.dataset.idx
+      );
     });
     return button;
   };
@@ -165,12 +168,15 @@ const mainDisplayController = (() => {
   const createDeleteButton = () => {
     const button = document.createElement("button");
     button.classList.add("del-btn");
-    button.textContent = "X";
+    button.classList.add("clickable");
+    button.innerHTML = '<i class="fas fa-trash"></i>';
     button.setAttribute("type", "button");
     button.setAttribute("title", "Delete");
     button.addEventListener("click", function (e) {
       if (confirm("Are you sure you want to delete this To Do?")) {
-        dataController.removeTodo(e.target.parentNode.parentNode.dataset.idx);
+        dataController.removeTodo(
+          e.target.parentNode.parentNode.parentNode.dataset.idx
+        );
       }
     });
     return button;
