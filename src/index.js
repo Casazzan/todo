@@ -52,7 +52,6 @@ const mainDisplayController = (() => {
     container.setAttribute("display", "none"); //TEST W/O this
     clearTodoDisplay();
 
-    let idx = 0;
     for (let idx = 0; idx < todos.length; idx++) {
       const item = todos[idx];
       const todo = document.createElement("div");
@@ -64,6 +63,7 @@ const mainDisplayController = (() => {
 
       const todoMain = document.createElement("div");
       todoMain.classList = "todo-main";
+      todoMain.appendChild(createCheckbox(idx));
       if (item.name) todoMain.appendChild(createTextElement("name", item.name));
       else todoMain.appendChild(createTextElement("name", "Unnamed Todo"));
       if (item.date) todoMain.appendChild(createTextElement("date", item.date));
@@ -115,6 +115,7 @@ const mainDisplayController = (() => {
 
   const revealTodoSub = (e) => {
     //hide other revealed element
+    if (e.target.tagName == "INPUT") return;
     const element = document.querySelector(".shown");
     if (element) {
       element.classList.toggle("shown");
@@ -133,6 +134,20 @@ const mainDisplayController = (() => {
     p.classList = pClass;
     p.textContent = text;
     return p;
+  };
+
+  const createCheckbox = (idx) => {
+    const box = document.createElement("input");
+    box.setAttribute("type", "checkbox");
+    box.setAttribute("value", idx);
+    box.classList.add("round-check");
+    box.addEventListener("click", checkClicked);
+    return box;
+  };
+
+  const checkClicked = (e) => {
+    dataController.changeCompleteState(e.target.value);
+    e.target.parentNode.parentNode.parentNode.classList.toggle("dim-todo");
   };
 
   const createEditButton = () => {
@@ -234,6 +249,11 @@ const dataController = (() => {
     mainDisplayController.openProject(idx);
   };
 
+  const changeCompleteState = (idx) => {
+    getActiveProject().todos[idx].isCompleted = !getActiveProject().todos[idx]
+      .isCompleted;
+  };
+
   return {
     addNewProject,
     addTodoToProject,
@@ -245,6 +265,7 @@ const dataController = (() => {
     removeTodo,
     editTodo,
     setActiveProjectIdx,
+    changeCompleteState,
   };
 })();
 
