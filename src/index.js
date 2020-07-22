@@ -67,6 +67,7 @@ const mainDisplayController = (() => {
       if (item.isCompleted) {
         box.setAttribute("checked", "checked");
       }
+      box.addEventListener("click", checkClicked);
       todoMain.appendChild(box);
       if (item.name) todoMain.appendChild(createTextElement("name", item.name));
       else todoMain.appendChild(createTextElement("name", "Unnamed Todo"));
@@ -92,9 +93,16 @@ const mainDisplayController = (() => {
         if (item.subList) {
           const subList = document.createElement("div");
           subList.id = "sub-list";
-          item.subList.forEach((subItem) => {
-            subList.appendChild(createTextElement("sub-item", subItem));
-          });
+          for (let i = 0; i < item.subList.length; i++) {
+            const box = createCheckbox(i);
+            if (item.isCompleted) {
+              box.setAttribute("checked", "checked");
+            }
+            box.addEventListener("click", subCheckClicked);
+            subList.appendChild(box);
+            subList.appendChild(createTextElement("sub-item", item.subList[i]));
+          }
+
           todoSub.appendChild(subList);
         }
         todoContent.appendChild(todoSub);
@@ -145,13 +153,16 @@ const mainDisplayController = (() => {
     box.setAttribute("type", "checkbox");
     box.setAttribute("value", idx);
     box.classList.add("round-check");
-    box.addEventListener("click", checkClicked);
     return box;
   };
 
   const checkClicked = (e) => {
     dataController.changeCompleteState(e.target.value);
     e.target.parentNode.parentNode.parentNode.classList.toggle("complete");
+  };
+
+  const subCheckClicked = (e) => {
+    e.target.nextSibling.classList.toggle("sub-complete");
   };
 
   const createEditButton = () => {
