@@ -63,7 +63,11 @@ const mainDisplayController = (() => {
 
       const todoMain = document.createElement("div");
       todoMain.classList = "todo-main";
-      todoMain.appendChild(createCheckbox(idx));
+      const box = createCheckbox(idx);
+      if (item.isCompleted) {
+        box.setAttribute("checked", "checked");
+      }
+      todoMain.appendChild(box);
       if (item.name) todoMain.appendChild(createTextElement("name", item.name));
       else todoMain.appendChild(createTextElement("name", "Unnamed Todo"));
       if (item.date) todoMain.appendChild(createTextElement("date", item.date));
@@ -73,7 +77,7 @@ const mainDisplayController = (() => {
       if (item.priority === "!!!") priority.classList.add("high-p");
       todoMain.appendChild(priority);
       if (item.isCompleted) {
-        item.classList.add("complete");
+        todo.classList.add("complete");
       }
       todoContent.appendChild(todoMain);
 
@@ -147,7 +151,7 @@ const mainDisplayController = (() => {
 
   const checkClicked = (e) => {
     dataController.changeCompleteState(e.target.value);
-    e.target.parentNode.parentNode.parentNode.classList.toggle("dim-todo");
+    e.target.parentNode.parentNode.parentNode.classList.toggle("complete");
   };
 
   const createEditButton = () => {
