@@ -262,16 +262,16 @@ header {
 
 .name::after {
   content: "";
-  transition: width 1s linear;
-  width: 0%;
-}
-
-.complete .name::after {
   content: " ";
   position: absolute;
   top: 50%;
   left: 0;
-  width: 100%;
+  width: 0%;
   height: 1px;
   background: black;
+  transition: width 1s linear;
+}
+
+.complete .name::after {
+  width: 100%;
 }
