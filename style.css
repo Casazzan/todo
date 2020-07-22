@@ -151,6 +151,8 @@ header {
 }
 
 .todo-main .name {
+  position: relative;
+  width: fit-content;
   grid-row: 1;
   grid-column: 2;
 }
@@ -256,4 +258,20 @@ header {
 
 .dim-todo p {
   opacity: 0.6;
+}
+
+.name::after {
+  content: "";
+  transition: width 1s linear;
+  width: 0%;
+}
+
+.dim-todo .name::after {
+  content: " ";
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: black;
 }
