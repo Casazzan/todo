@@ -361,7 +361,7 @@ const dataController = (() => {
 })();
 
 function initialLoad() {
-  if (false && localStorage.getItem("projects")) {
+  if (localStorage.getItem("projects")) {
     const storedProjects = JSON.parse(localStorage.getItem("projects"));
     const projects = [];
     storedProjects.forEach((storedProject) => {
