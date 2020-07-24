@@ -208,7 +208,7 @@ const mainDisplayController = (() => {
 
 const dataController = (() => {
   let activeProjectIdx = 0;
-  const projects = [];
+  let projects = [];
 
   const setActiveProjectIdx = (idx) => {
     activeProjectIdx = idx;
@@ -218,10 +218,11 @@ const dataController = (() => {
     projects.push(projectFactory(name));
     projectDisplayController.updateProjectDisplay();
     mainDisplayController.openProject(projects.length - 1);
+    updateStorage();
   };
 
-  const addExistingProject = (proj) => {
-    projects.push(proj);
+  const loadStoredProjects = (proj) => {
+    projects = proj;
   };
 
   const addTodoToProject = (project, todo) => {
@@ -268,6 +269,7 @@ const dataController = (() => {
     }
     addTodoToProject(projects[idx], todo);
     mainDisplayController.openProject(idx);
+    updateStorage();
   };
 
   const changeCompleteState = (idx) => {
@@ -275,11 +277,15 @@ const dataController = (() => {
       .isCompleted;
   };
 
+  const updateStorage = () => {
+    localStorage.setItem("projects", JSON.stringify(projects));
+  };
+
   return {
     addNewProject,
     addTodoToProject,
     getProjects,
-    addExistingProject,
+    loadStoredProjects,
     getProject,
     addTodo,
     getActiveProject,
@@ -290,29 +296,40 @@ const dataController = (() => {
   };
 })();
 
-const todoWithSublist = todoFactory(
-  "Conquer the world",
-  formatDate(new Date(2020, 6, 20), "mm-dd-yyyy"),
-  "Be ruler of every country",
-  "!!!",
-  ["conquer england", "tell england to conquer everyone else"]
-);
+function initialLoad() {
+  if (localStorage.getItem("projects")) {
+    const storedProjects = JSON.parse(localStorage.getItem("projects"));
+    dataController.loadStoredProjects(storedProjects);
+  } else {
+    console.log("hi");
+    const todoWithSublist = todoFactory(
+      "Conquer the world",
+      formatDate(new Date(2020, 6, 20), "mm-dd-yyyy"),
+      "Be ruler of every country",
+      "!!!",
+      ["conquer england", "tell england to conquer everyone else"]
+    );
 
-const projectTest = projectFactory("Unassigned To Do's");
-projectTest.addTodo(todoWithSublist);
-
-dataController.addExistingProject(projectTest);
-
-document.getElementById("todo-btn").addEventListener("click", () => {
-  loadNewTodoForm(dataController.getActiveProject().name);
-});
-document.getElementById("project-btn").addEventListener("click", newProject);
-document.getElementById("project-input").addEventListener("keydown", (e) => {
-  if (e.key === "Enter") {
-    newProject();
+    const projectTest = projectFactory("Unassigned To Do's");
+    projectTest.addTodo(todoWithSublist);
+    const projects = [projectTest];
+    dataController.loadStoredProjects(projects);
   }
-});
 
-projectDisplayController.updateProjectDisplay();
-mainDisplayController.openProject(0);
+  document.getElementById("todo-btn").addEventListener("click", () => {
+    loadNewTodoForm(dataController.getActiveProject().name);
+  });
+  document.getElementById("project-btn").addEventListener("click", newProject);
+  document.getElementById("project-input").addEventListener("keydown", (e) => {
+    if (e.key === "Enter") {
+      newProject();
+    }
+  });
+
+  projectDisplayController.updateProjectDisplay();
+  mainDisplayController.openProject(0);
+}
+
+initialLoad();
+
 export { dataController };
