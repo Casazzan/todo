@@ -152,7 +152,7 @@ const submitTodoForm = () => {
   const notes = document.getElementById("note").value;
   let date = document.getElementById("date").value;
   if (date) {
-    date = formatDate(parseISO(date), "mm-dd-yyyy");
+    date = formatDate(parseISO(date), "yyyy-MM-dd");
   }
   const priority = document.getElementById("prior").value;
 

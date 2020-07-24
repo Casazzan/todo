@@ -1,6 +1,6 @@
 import todoFactory from "./todo";
 import projectFactory from "./project";
-import { format as formatDate } from "date-fns";
+import { parseISO, format as formatDate } from "date-fns";
 import { loadNewTodoForm, newProject, loadCurrentTodoForm } from "./newForms";
 
 const projectDisplayController = (() => {
@@ -96,7 +96,13 @@ const mainDisplayController = (() => {
       todoMain.appendChild(box);
       if (item.name) todoMain.appendChild(createTextElement("name", item.name));
       else todoMain.appendChild(createTextElement("name", "Unnamed Todo"));
-      if (item.date) todoMain.appendChild(createTextElement("date", item.date));
+      if (item.date)
+        todoMain.appendChild(
+          createTextElement(
+            "date",
+            formatDate(parseISO(item.date), "MMMM do, yyyy")
+          )
+        );
       const priority = createTextElement("priority", item.priority);
       if (item.priority === "!") priority.classList.add("low-p");
       if (item.priority === "!!") priority.classList.add("medium-p");
@@ -355,7 +361,7 @@ const dataController = (() => {
 })();
 
 function initialLoad() {
-  if (localStorage.getItem("projects")) {
+  if (false && localStorage.getItem("projects")) {
     const storedProjects = JSON.parse(localStorage.getItem("projects"));
     const projects = [];
     storedProjects.forEach((storedProject) => {
@@ -369,7 +375,7 @@ function initialLoad() {
   } else {
     const todoWithSublist = todoFactory(
       "Conquer the world",
-      formatDate(new Date(2020, 6, 20), "mm-dd-yyyy"),
+      formatDate(new Date(2020, 6, 20), "yyyy-MM-dd"),
       "Be ruler of every country",
       "!!!",
       ["conquer england", "tell england to conquer everyone else"]
