@@ -1,10 +1,21 @@
 import { dataController } from "./index";
 import { parseISO, format as formatDate } from "date-fns";
 
-const loadTodoForm = (projectName, name, notes, date, priority, subList) => {
+const loadTodoForm = (
+  projectName,
+  name,
+  notes,
+  date,
+  priority,
+  subList,
+  oldIdx = null
+) => {
   const container = document.createElement("div");
-  container.classList.add("todo-form");
-  container.classList.add("form");
+  container.id = "todo-form";
+  if (oldIdx) {
+    container.dataset.idx = oldIdx;
+    console.log(oldIdx);
+  }
 
   const head = document.createElement("h1");
   head.textContent = "Create New To Do";
@@ -123,8 +134,16 @@ const loadNewTodoForm = (projectName) => {
 };
 
 //parameter to distinguish which one
-const loadCurrentTodoForm = (project, name, notes, date, prior, subList) => {
-  loadTodoForm(project, name, notes, date, prior, subList);
+const loadCurrentTodoForm = (
+  project,
+  name,
+  notes,
+  date,
+  prior,
+  subList,
+  idx
+) => {
+  loadTodoForm(project, name, notes, date, prior, subList, idx);
 };
 
 const submitTodoForm = () => {
@@ -144,10 +163,20 @@ const submitTodoForm = () => {
       subList.push(task.value);
     }
   });
-
-  dataController.addTodo(projectName, name, date, notes, priority, subList);
-  //TODO format these values to what things will be stored as
-  //TODO add todo to that project
+  const container = document.getElementById("todo-form");
+  if (container.hasAttribute("data-idx")) {
+    dataController.changeTodo(
+      projectName,
+      name,
+      date,
+      notes,
+      priority,
+      subList,
+      container.dataset.idx
+    );
+  } else {
+    dataController.addTodo(projectName, name, date, notes, priority, subList);
+  }
 
   deleteForm();
 };
@@ -161,7 +190,7 @@ const newProject = () => {
   }
 };
 const deleteForm = () => {
-  const container = document.querySelector(".form");
+  const container = document.querySelector("#todo-form");
   while (container.firstChild) {
     container.removeChild(container.lastChild);
   }

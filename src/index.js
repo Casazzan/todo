@@ -256,8 +256,30 @@ const dataController = (() => {
       item.notes,
       item.date,
       item.priority,
-      item.subList
+      item.subList,
+      idx
     );
+  };
+
+  const changeTodo = (
+    projectName,
+    name,
+    date,
+    notes,
+    priority,
+    subList,
+    idx
+  ) => {
+    const todo = todoFactory(name, date, notes, priority, subList);
+    let projIdx = 0;
+    for (let i = 0; i < projects.length; i++) {
+      if (projects[i].name === projectName) {
+        projIdx = i;
+        break;
+      }
+    }
+    projects[projIdx].todos.splice(idx, 1, todo);
+    mainDisplayController.updateTodoDisplay(projects[projIdx].todos);
   };
 
   const addTodo = (projectName, name, date, notes, priority, subList) => {
@@ -266,6 +288,7 @@ const dataController = (() => {
     for (let i = 1; i < projects.length; i++) {
       if (projects[i].name === projectName) {
         idx = i;
+        break;
       }
     }
     addTodoToProject(projects[idx], todo);
@@ -293,6 +316,7 @@ const dataController = (() => {
     editTodo,
     setActiveProjectIdx,
     changeCompleteState,
+    changeTodo,
   };
 })();
 
