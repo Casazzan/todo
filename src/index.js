@@ -227,6 +227,7 @@ const dataController = (() => {
 
   const addTodoToProject = (project, todo) => {
     project.addTodo(todo);
+    updateStorage();
   };
 
   const getProjects = () => {
@@ -269,7 +270,6 @@ const dataController = (() => {
     }
     addTodoToProject(projects[idx], todo);
     mainDisplayController.openProject(idx);
-    updateStorage();
   };
 
   const changeCompleteState = (idx) => {
@@ -299,9 +299,16 @@ const dataController = (() => {
 function initialLoad() {
   if (localStorage.getItem("projects")) {
     const storedProjects = JSON.parse(localStorage.getItem("projects"));
-    dataController.loadStoredProjects(storedProjects);
+    const projects = [];
+    storedProjects.forEach((storedProject) => {
+      const project = projectFactory(storedProject.name);
+      storedProject.todos.forEach((todo) => {
+        project.addTodo(todo);
+      });
+      projects.push(project);
+    });
+    dataController.loadStoredProjects(projects);
   } else {
-    console.log("hi");
     const todoWithSublist = todoFactory(
       "Conquer the world",
       formatDate(new Date(2020, 6, 20), "mm-dd-yyyy"),

@@ -1,6 +1,9 @@
 const projectFactory = (name) => {
-  const todos = [];
+  let todos = [];
 
+  const setTodos = (t) => {
+    obj.todos = t;
+  };
   const addTodo = (todo) => {
     todos.push(todo);
   };
@@ -20,7 +23,17 @@ const projectFactory = (name) => {
     return todos[idx];
   };
 
-  return { name, todos, addTodo, removeTodo, removeTodoByIdx, getTodo };
+  const obj = {
+    todos,
+    name,
+    addTodo,
+    removeTodo,
+    removeTodoByIdx,
+    getTodo,
+    setTodos,
+  };
+
+  return obj;
 };
 
 export default projectFactory;
