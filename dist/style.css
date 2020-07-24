@@ -220,7 +220,8 @@ header {
 }
 
 #exit-form:hover,
-.del-btn:hover {
+.del-btn:hover,
+.proj-del-btn:hover {
   color: red;
   transform: scale(1.2);
 }
@@ -283,4 +284,14 @@ header {
 .complete .name::after,
 .sub-complete.sub-item::after {
   width: 100%;
+}
+
+.project-div {
+  display: flex;
+  justify-content: space-between;
+}
+
+.proj-del-btn {
+  background-color: inherit;
+  border: none;
 }

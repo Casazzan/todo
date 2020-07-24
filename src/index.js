@@ -12,13 +12,34 @@ const projectDisplayController = (() => {
     const projects = dataController.getProjects();
 
     for (let i = 0; i < projects.length; i++) {
+      const div = document.createElement("div");
+      div.classList = "project-div";
       const p = document.createElement("p");
       p.classList.add("project");
       p.dataset.idx = i;
       p.textContent = projects[i].name;
       p.addEventListener("click", openProjectEvent);
-      container.insertBefore(p, bottomElement);
+      div.appendChild(p);
+      div.appendChild(createDeleteButton());
+      container.insertBefore(div, bottomElement);
     }
+  };
+
+  const createDeleteButton = () => {
+    const button = document.createElement("button");
+    button.classList.add("proj-del-btn");
+    button.classList.add("clickable");
+    button.innerHTML = '<i class="fas fa-trash"></i>';
+    button.setAttribute("type", "button");
+    button.setAttribute("title", "Delete");
+    button.addEventListener("click", function (e) {
+      if (confirm("Are you sure you want to delete this Project?")) {
+        dataController.removeProject(
+          e.target.parentNode.previousSibling.dataset.idx
+        );
+      }
+    });
+    return button;
   };
 
   const openProjectEvent = (e) => {
@@ -40,10 +61,14 @@ const projectDisplayController = (() => {
 const mainDisplayController = (() => {
   const openProject = (idx) => {
     const project = dataController.getProject(idx);
+    if (project) {
+      document.getElementById("display-proj").textContent = project.name;
 
-    document.getElementById("display-proj").textContent = project.name;
-
-    updateTodoDisplay(project.todos);
+      updateTodoDisplay(project.todos);
+    } else {
+      document.getElementById("display-proj").textContent = "";
+      updateTodoDisplay([]);
+    }
     dataController.setActiveProjectIdx(idx);
   };
 
@@ -230,6 +255,13 @@ const dataController = (() => {
     updateStorage();
   };
 
+  const removeProject = (idx) => {
+    projects.splice(idx, 1);
+    projectDisplayController.updateProjectDisplay();
+    mainDisplayController.openProject(0);
+    updateStorage();
+  };
+
   const getProjects = () => {
     return projects;
   };
@@ -280,6 +312,7 @@ const dataController = (() => {
     }
     projects[projIdx].todos.splice(idx, 1, todo);
     mainDisplayController.updateTodoDisplay(projects[projIdx].todos);
+    updateStorage();
   };
 
   const addTodo = (projectName, name, date, notes, priority, subList) => {
@@ -317,6 +350,7 @@ const dataController = (() => {
     setActiveProjectIdx,
     changeCompleteState,
     changeTodo,
+    removeProject,
   };
 })();
 
