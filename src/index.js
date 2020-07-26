@@ -1,6 +1,6 @@
 import todoFactory from "./todo";
 import projectFactory from "./project";
-import { parseISO, format as formatDate } from "date-fns";
+import { parseISO, format as formatDate, sub } from "date-fns";
 import { loadNewTodoForm, newProject, loadCurrentTodoForm } from "./newForms";
 
 const projectDisplayController = (() => {
@@ -96,13 +96,18 @@ const mainDisplayController = (() => {
       todoMain.appendChild(box);
       if (item.name) todoMain.appendChild(createTextElement("name", item.name));
       else todoMain.appendChild(createTextElement("name", "Unnamed Todo"));
-      if (item.date)
-        todoMain.appendChild(
-          createTextElement(
-            "date",
-            formatDate(parseISO(item.date), "MMMM do, yyyy")
-          )
-        );
+      if (item.date) {
+        try {
+          todoMain.appendChild(
+            createTextElement(
+              "date",
+              formatDate(parseISO(item.date), "MMMM do, yyyy")
+            )
+          );
+        } catch (e) {
+          console.log("Parse Iso Date Error: " + e);
+        }
+      }
       const priority = createTextElement("priority", item.priority);
       if (item.priority === "!") priority.classList.add("low-p");
       if (item.priority === "!!") priority.classList.add("medium-p");
@@ -157,15 +162,20 @@ const mainDisplayController = (() => {
   };
 
   const revealTodoSub = (e) => {
-    //hide other revealed element
     if (e.target.tagName == "INPUT") return;
+    //hide other revealed element
     const element = document.querySelector(".shown");
     if (element) {
       element.classList.toggle("shown");
       element.classList.toggle("hidden");
     }
 
-    const subContent = e.target.parentNode.nextSibling;
+    let subContent;
+    if (e.target.tagName == "P") {
+      subContent = e.target.parentNode.nextSibling;
+    } else {
+      subContent = e.target.nextSibling;
+    }
     if (subContent && subContent !== element) {
       subContent.classList.toggle("shown");
       subContent.classList.toggle("hidden");
