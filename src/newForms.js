@@ -50,6 +50,9 @@ const loadTodoForm = (
 
   container.appendChild(projectSelector);
 
+  container.appendChild(createLabel("To Do name", "name"));
+  container.appendChild(createInput("name", "text", name));
+
   container.appendChild(createLabel("Add Sub Task", "task-container"));
   const taskContainer = document.createElement("div");
   taskContainer.id = "task-container";
@@ -62,10 +65,6 @@ const loadTodoForm = (
   taskContainer.appendChild(addBtn);
 
   container.appendChild(taskContainer);
-
-  container.appendChild(createLabel("Todo name", "name"));
-  container.appendChild(createInput("name", "text", name));
-
   container.appendChild(createLabel("Notes", "note"));
   const note = document.createElement("textarea");
   note.id = "note";
