@@ -161,7 +161,7 @@ const submitTodoForm = () => {
   const priority = document.getElementById("prior").value;
 
   const subList = [];
-  const tasks = document.getElementById("task-container").childNodes;
+  const tasks = document.getElementById("sub-task-container").childNodes;
   tasks.forEach((task) => {
     if (task.value) {
       subList.push(task.value);
