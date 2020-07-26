@@ -229,11 +229,9 @@ const mainDisplayController = (() => {
     button.setAttribute("type", "button");
     button.setAttribute("title", "Delete");
     button.addEventListener("click", function (e) {
-      if (confirm("Are you sure you want to delete this To Do?")) {
-        dataController.removeTodo(
-          e.target.parentNode.parentNode.parentNode.dataset.idx
-        );
-      }
+      dataController.removeTodo(
+        e.target.parentNode.parentNode.parentNode.dataset.idx
+      );
     });
     return button;
   };

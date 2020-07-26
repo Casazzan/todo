@@ -50,21 +50,26 @@ const loadTodoForm = (
 
   container.appendChild(projectSelector);
 
-  container.appendChild(createLabel("To Do name", "name"));
+  container.appendChild(createLabel("To Do Name", "name"));
   container.appendChild(createInput("name", "text", name));
 
-  container.appendChild(createLabel("Add Sub Task", "task-container"));
   const taskContainer = document.createElement("div");
   taskContainer.id = "task-container";
+  if (!subList) taskContainer.classList.add("empty");
+  taskContainer.appendChild(createLabel("Add Sub Task", "sub-task-container"));
+  const subTaskContainer = document.createElement("div");
+  subTaskContainer.id = "sub-task-container";
 
   const addBtn = document.createElement("button");
   addBtn.id = "add-btn";
   addBtn.setAttribute("type", "button");
   addBtn.innerHTML = "+";
   addBtn.addEventListener("click", addSubTask);
-  taskContainer.appendChild(addBtn);
+  subTaskContainer.appendChild(addBtn);
 
+  taskContainer.appendChild(subTaskContainer);
   container.appendChild(taskContainer);
+
   container.appendChild(createLabel("Notes", "note"));
   const note = document.createElement("textarea");
   note.id = "note";
@@ -205,11 +210,13 @@ const addSubTask = () => {
 
 const addSubTaskWithText = (task) => {
   const container = document.getElementById("task-container");
+  container.classList.remove("empty");
+  const subContainer = document.getElementById("sub-task-container");
   const subTask = document.createElement("input");
   subTask.classList.add("sub-task");
   subTask.setAttribute("type", "text");
   subTask.value = task;
-  container.prepend(subTask);
+  subContainer.prepend(subTask);
 };
 
 export { newProject, loadNewTodoForm, loadCurrentTodoForm };
