@@ -8,8 +8,19 @@ body {
 .dimmed {
   opacity: 0.4;
 }
-
 #task-container {
+  display: flex;
+  flex-direction: column;
+}
+#task-container.empty {
+  flex-direction: row;
+  align-content: center;
+}
+#task-container.empty > div {
+  margin-top: 7px;
+  margin-left: 3px;
+}
+#sub-task-container {
   display: flex;
   flex-direction: column;
 }
@@ -65,9 +76,9 @@ header {
   right: 3%;
   border-radius: 50%;
   border-color: white;
-  height: 2em;
-  width: 2em;
-  font-size: 50px;
+  height: 2.2em;
+  width: 2.2em;
+  font-size: 70px;
   color: white;
   background-color: rgb(0, 162, 255);
 }
@@ -79,23 +90,42 @@ header {
   flex-direction: column;
   z-index: 2;
   top: 15%;
-  left: max(250px, 30%);
-  width: 40%;
+  left: max(250px, calc(50% - 250px), calc(30%));
+  width: min(500px, 40%);
   padding: 0 15px 15px 15px;
   background-color: white;
   border: solid black 2px;
   border-radius: 5px;
+  background-color: rgb(187, 187, 187);
+}
+
+#todo-form > input {
+  width: 50%;
+}
+#todo-form > select {
+  width: 30%;
 }
 
 #form-header {
   font-size: 1.4em;
   text-align: center;
   padding-bottom: -5px;
+  margin: 0px -15px 0px -15px;
+  background-color: rgb(0, 140, 255);
 }
 
 #todo-form label,
 .submit-btn {
   margin-top: 10px;
+}
+
+.submit-btn {
+  align-self: center;
+  background-color: white;
+}
+
+.submit-btn:hover {
+  box-shadow: black 1px 1px;
 }
 
 #add-btn {
@@ -146,13 +176,12 @@ header {
   grid-row: 1;
   grid-column: 1;
   display: grid;
-  grid-template-columns: 0.3fr 4fr 4fr;
+  grid-template-columns: 0.3fr 4fr 3fr;
   grid-template-rows: 1fr 1fr;
 }
 
 .todo-main .name {
   position: relative;
-  width: fit-content;
   grid-row: 1;
   grid-column: 2;
 }
@@ -232,7 +261,6 @@ header {
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  margin-left: 100%;
 }
 .high-p {
   border: solid 3px rgb(255, 146, 146);
